@@ -15,11 +15,24 @@ impl EventHandler for Handler {
     // dispatched simultaneously.
     async fn message(&self, ctx: Context, msg: Message) {
         if msg.content == "!ping" {
-            // Sending a message can fail, due to a network error, an authentication error, or lack
-            // of permissions to post in the channel, so log to stdout when some error happens,
-            // with a description of it.
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
-                println!("Error sending message: {why:?}");
+            let start = std::time::Instant::now();
+            // First, send a temporary message.
+            match msg.channel_id.say(&ctx.http, "Pinging...").await {
+                Ok(mut sent_msg) => {
+                    let elapsed = start.elapsed().as_millis();
+                    // Edit the sent message to include the ping time.
+                    if let Err(why) = sent_msg
+                        .edit(
+                            &ctx.http,
+                            serenity::builder::EditMessage::new()
+                                .content(format!("Pong! {} ms", elapsed)),
+                        )
+                        .await
+                    {
+                        println!("Error editing message: {why:?}");
+                    }
+                }
+                Err(why) => println!("Error sending message: {why:?}"),
             }
         }
     }
