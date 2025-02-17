@@ -1,0 +1,10 @@
+[package]
+name = "e05_command_framework"
+version = "0.1.0"
+authors = ["my name <my@email.address>"]
+edition = "2018"
+
+[dependencies]
+serenity = "0.12"
+tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
+dotenv = "0.15"
