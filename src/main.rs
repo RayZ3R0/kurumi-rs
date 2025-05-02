@@ -1,45 +1,50 @@
-use serenity::async_trait;
-use serenity::model::channel::Message;
-use serenity::model::gateway::Ready;
-use serenity::prelude::*;
+mod bot;
+mod commands;
+mod events;
+mod framework;
+mod models;
+mod utils;
 
-struct Handler;
+use std::env;
 
-#[async_trait]
-impl EventHandler for Handler {
-    // Set a handler for the `message` event - so this will be called whenever a new message is received
-    async fn message(&self, ctx: Context, msg: Message) {
-        // If the message is "!ping"
-        if msg.content == "!ping" {
-            // Send a message back
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-    }
+use dotenv::dotenv;
+use tracing::{error, info};
 
-    // Set a handler for the `ready` event - this will be called when the bot is ready and connected
-    async fn ready(&self, _: Context, ready: Ready) {
-        println!("{} is connected!", ready.user.name);
-    }
-}
+use crate::bot::{load_config, load_token, Bot};
 
 #[tokio::main]
 async fn main() {
-    // Configure the client with your Discord bot token in the environment.
-    // Get your token by creating a bot application at https://discord.com/developers/applications
-    let token = std::env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
+    // Load environment variables from .env file
+    dotenv().ok();
 
-    // Create a new instance of the Client, logging in as a bot
-    let intents = GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT;
+    // Initialize logging with environment variables (RUST_LOG=info,kurumi_rs=debug)
+    tracing_subscriber::fmt::init();
 
-    let mut client = Client::builder(&token, intents)
-        .event_handler(Handler)
-        .await
-        .expect("Error creating client");
+    info!("Starting Kurumi Discord Bot...");
 
-    // Start the client
-    if let Err(why) = client.start().await {
-        println!("Client error: {:?}", why);
+    // Load the Discord token
+    let token = match load_token() {
+        Ok(token) => token,
+        Err(e) => {
+            error!("Failed to load Discord token: {}", e);
+            return;
+        }
+    };
+
+    // Load bot configuration
+    let config = match load_config() {
+        Ok(config) => config,
+        Err(e) => {
+            error!("Failed to load configuration: {}", e);
+            return;
+        }
+    };
+
+    // Create and start the bot
+    let bot = Bot::new(token, config);
+
+    // Start the bot
+    if let Err(why) = bot.start().await {
+        error!("Bot error: {:?}", why);
     }
 }

@@ -1,0 +1,31 @@
+# Kurumi Discord Bot Configuration
+
+# Default command prefix
+prefix = "!"
+
+# User IDs that have owner privileges (can use owner-only commands)
+owners = [
+    # Add your user ID here
+    # 123456789012345678
+]
+
+# Whether to respond to bot mentions as a command prefix
+respond_to_mentions = true
+
+# Command-specific settings
+[commands]
+# Whether commands are case-insensitive
+case_insensitive = true
+# Commands that should be disabled
+disabled = []
+# Command cooldown in seconds
+cooldown = 3
+
+# Logging configuration
+[logging]
+# Log level (trace, debug, info, warn, error)
+level = "info"
+# Whether to log to file
+file_logging = true
+# Log file path
+file_path = "logs/bot.log"

@@ -1,15 +1,37 @@
 [package]
-name = "e05_command_framework"
+name = "kurumi-rs"
 version = "0.1.0"
-authors = ["my name <my@email.address>"]
-edition = "2018"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "A modular Discord bot built with Serenity"
 
 [dependencies]
-serenity = "0.12"
-tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
+# Main Discord library
+serenity = { version = "0.11", default-features = false, features = [
+    "client",
+    "gateway",
+    "rustls_backend",
+    "model",
+    "cache",
+] }
+
+# Async runtime
+tokio = { version = "1.28", features = ["macros", "rt-multi-thread", "signal"] }
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Configuration
 dotenv = "0.15"
-thiserror = "1.0"
-async-trait = "0.1"
+config = "0.13"
 serde = { version = "1.0", features = ["derive"] }
-toml = "0.8"
-lazy_static = "1.4"
+toml = "0.7"
+
+# Utilities
+async-trait = "0.1"
+thiserror = "1.0"
+chrono = "0.4"
+
+# Database (optional, commented out for now)
+# sqlx = { version = "0.6", features = ["runtime-tokio-rustls", "sqlite", "migrate", "chrono"] }
