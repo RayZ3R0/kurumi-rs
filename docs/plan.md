@@ -5,7 +5,7 @@ Let me design a scalable Discord bot architecture inspired by Discord.js bot han
 ## Directory Structure
 
 ```
-kurumi-rs/
+rust-discord-bot-hander/
 ├── Cargo.toml
 ├── .env
 ├── src/
@@ -49,7 +49,7 @@ Let's start with the Cargo.toml and `main.rs`:
 
 ```toml
 [package]
-name = "kurumi-rs"
+name = "rust-discord-bot-hander"
 version = "0.1.0"
 edition = "2021"
 authors = ["Your Name <your.email@example.com>"]
@@ -104,10 +104,10 @@ async fn main() {
     // Load environment variables from .env file
     dotenv().ok();
 
-    // Initialize logging with environment variables (RUST_LOG=info,kurumi_rs=debug)
+    // Initialize logging with environment variables (RUST_LOG=info,rust-discord-bot-hander=debug)
     tracing_subscriber::fmt::init();
 
-    info!("Starting Kurumi Discord Bot...");
+    info!("Starting Discord Bot...");
 
     // Get the Discord token from environment variables
     let token = env::var("DISCORD_TOKEN")

@@ -7,7 +7,7 @@ pub const DEFAULT_PREFIX: &str = "!";
 pub const BOT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 /// Bot name.
-pub const BOT_NAME: &str = "Kurumi";
+pub const BOT_NAME: &str = "Discord Bot";
 
 /// Bot author(s).
 pub const BOT_AUTHOR: &str = env!("CARGO_PKG_AUTHORS");

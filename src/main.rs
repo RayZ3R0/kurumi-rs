@@ -30,7 +30,7 @@ async fn main() {
 
     tracing::subscriber::set_global_default(subscriber).expect("Failed to set tracing subscriber");
 
-    info!("Starting Kurumi Discord Bot...");
+    info!("Starting Discord Bot...");
     debug!("Initializing bot with debug logging enabled");
 
     // Load the Discord token
