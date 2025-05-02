@@ -1,6 +1,6 @@
 //! General utility commands for the bot.
 
-mod ping;
+pub mod ping;
 
 use crate::framework::command_handler::CommandHandler;
 
